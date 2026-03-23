@@ -1,8 +1,21 @@
 
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
 
 const Home = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <div className="text-center space-y-6">
@@ -18,6 +31,14 @@ const Home = () => {
         <p className="text-xl text-muted-foreground max-w-md mx-auto">
           这是一个基于 React + TypeScript + Tailwind CSS 构建的现代 Web 应用
         </p>
+        
+        {/* 时间显示组件 */}
+        <div className="flex items-center justify-center gap-2 bg-card border border-border rounded-lg px-6 py-4">
+          <Clock className="h-5 w-5 text-muted-foreground" />
+          <span className="text-2xl font-mono font-semibold text-foreground">
+            {format(currentTime, "yyyy 年 MM 月 dd 日 HH:mm:ss", { locale: zhCN })}
+          </span>
+        </div>
         
         <div className="flex gap-4 justify-center">
           <Button size="lg" className="text-base">
